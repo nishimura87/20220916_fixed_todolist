@@ -10,6 +10,18 @@ class Todo extends Model
     use HasFactory;
     protected $guarded = array('id');
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function tag() {
+        return $this->belongsTo(Tag::class);
+    }
+
+    public function getTagname(){//修正
+        return 'tag_name'.$this->tag_name . optional($this->tag)->name;
+    }
+
     /**
      * 一覧画面表示用にtodosテーブルから全てのデータを取得
      */
@@ -33,7 +45,9 @@ class Todo extends Model
     {
         // リクエストデータを基に管理マスターユーザーに登録する
         return $this->create([
-            'name' => $request->name
+            'task_name' => $request->task_name,
+            'tag_name' => $request->tag_name,
+            'user_id' => $reques->$user_id
         ]);
     }
 
@@ -43,7 +57,8 @@ class Todo extends Model
     public function updateTodo($request, $todo)
     {
         $result = $todo->fill([
-            'name' => $request->name
+            'task_name' => $request->task_name,
+            'tag_name' => $request->tag_name
         ])->save();
 
         return $result;

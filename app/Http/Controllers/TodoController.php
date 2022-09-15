@@ -5,23 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use App\Http\Requests\TodoRequest;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
 
     public function __construct()
     {
         $this->todo = new Todo();
+        $this->middleware('auth');
     }
 
     /**
      * 一覧画面
      */
-    public function index()
+    public function index(Request $request)
     {
-        $todos = $this->todo->findAllTodos();
+        
+        $user = Auth::user();
+        $todos = Todo::where('task_name', \Auth::user()->id)->get();
 
-        return view('index', compact('todos'));
+        return view('index', compact('todos','user'));
     }
 
     /**
@@ -29,9 +43,11 @@ class TodoController extends Controller
      */
     public function add(TodoRequest $request)
     {
-        $registerTodo = $this->todo->InsertTodo($request);
+        $task_name = $request->input('task_name');
+        $tag_name = $request->input('tag_name');
+        $user_id = Auth::id();
 
-        return redirect('/');
+        return redirect('/home');
     }
 
     /**
@@ -42,7 +58,7 @@ class TodoController extends Controller
         $todo = Todo::find($id);
         $updateTodo = $this->todo->updateTodo($request, $todo);
 
-        return redirect('/');
+        return redirect('/home');
     }
 
     /**
@@ -52,6 +68,19 @@ class TodoController extends Controller
     {
         $deleteTodo = $this->todo->deleteTodoById($id);
 
-        return redirect('/');
+        return redirect('/home');
     }
+
+    public function find(Request $request)
+    {
+        return redirect('find');
+    }
+
+    public function categry() 
+    {
+        $prefs = config('pref');
+        return view('categry')->with(['prefs' => $prefs]);
+}
+
+    
 }

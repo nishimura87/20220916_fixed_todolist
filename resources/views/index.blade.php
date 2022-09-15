@@ -10,16 +10,33 @@
   <body>
     <div class="content">
       <div class="todo_list">
-        <p class="title">Todo List</p>
-        @if ($errors->has('name'))
+        <div class="top_con">
+          <h1 class="title">Todo List</h1>
+          @if (Auth::check())
+          <div class="top_cont_right">
+            <p class='login_con'>「{{ $user->name }}」でログイン中</p>
+            @endif
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+            <button type="submit" class="btn-logout">ログアウト</button>
+            </form>
+          </div>  
+        </div>
+        <a class="btn-find" href="{{ route('find') }}">タスク検索</a>
+        @if ($errors->has('task_name'))
         <ul>
           <li>The content field is required.</li>
         </ul>
         @endif
         <form action="/add" method="POST"class="input_task">
           @csrf
-          <input type="text" class="input_add" name="name">
-          <input class="button_add" type="submit" value="追加">
+          <input type="text" class="input_add" name="task_name">
+          <select class="tag_name" name="tag_name">
+          @foreach(config('pref') as $tag => $name)
+            <option value="{{ $name }}">{{ $name }}</option>
+          @endforeach
+          </select>
+          <input class="btn-add" type="submit" value="追加">
         </form>
         <table calss = "table table-todo">
           <tr>
@@ -35,13 +52,14 @@
               @csrf
             <td>
               <input type ="hidden" name="id" value="{{ $todo->id }}">
-              <input type="text" name="name"  id="name" value="{{ $todo->name }}" class=task_con></td>
-            <td><button type="submit" class="btn btn-update">更新</button></td>
+              <input type="text" name="task_name"  id="task_name" value="{{ $todo->task_name }}" class=task_con></td>
+              <select class="tag_name" name="tag_name" id="tag_name" value="{{ $tag->tag->getTagname() }}" >
+            <td><button type="submit" class="btn-update">更新</button></td>
             </form>
             <td>
               <form action="{{ route('todo.delete', ['id'=>$todo->id]) }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-delete">削除</button>
+                <button type="submit" class="btn-delete">削除</button>
               </form>
             </td>
           </tr>
