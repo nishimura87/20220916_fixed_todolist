@@ -18,8 +18,8 @@ class Todo extends Model
         return $this->belongsTo(Tag::class);
     }
 
-    public function getTagname(){//修正
-        return 'tag_name'.$this->tag_name . optional($this->tag)->name;
+    public function getTagname(){
+        return 'tag_id'.$this->tag_name . optional($this->tag)->name;
     }
 
     /**
@@ -36,19 +36,6 @@ class Todo extends Model
     public function findTodoById($id)
     {
         return Todo::find($id);
-    }
-
-    /**
-     * 登録処理
-     */
-    public function InsertTodo($request)
-    {
-        // リクエストデータを基に管理マスターユーザーに登録する
-        return $this->create([
-            'task_name' => $request->task_name,
-            'tag_name' => $request->tag_name,
-            'user_id' => $reques->$user_id
-        ]);
     }
 
     /**

@@ -30,10 +30,11 @@
         @endif
         <form action="/add" method="POST"class="input_task">
           @csrf
+          <input type ="hidden" name="user_id" value="user_id">
           <input type="text" class="input_add" name="task_name">
-          <select class="tag_name" name="tag_name">
-          @foreach(config('pref') as $tag => $name)
-            <option value="{{ $name }}">{{ $name }}</option>
+          <select class="tag_id" name="tag_id">
+          @foreach(config('pref') as $tag => $tag_id)
+            <option value="{{ $tag_id }}">{{ $tag_id }}</option>
           @endforeach
           </select>
           <input class="btn-add" type="submit" value="追加">
