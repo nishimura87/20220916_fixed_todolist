@@ -43,10 +43,13 @@ class TodoController extends Controller
      */
     public function add(TodoRequest $request)
     {
-        $form = $request->all();
-        unset($form['_token']);
-        Todo::create($form);
-        return redirect('/home');
+        $user_id= Auth::id();
+
+        Todo::create([
+            'task_name' => $request->task_name,
+            'tag_id' => $request->tag_id,
+            'user_id' => $user_id
+        ]);
     }
 
     /**
