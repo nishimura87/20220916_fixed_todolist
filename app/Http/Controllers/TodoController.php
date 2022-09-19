@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Requests\TodoRequest;
 use Illuminate\Support\Facades\Auth;
@@ -31,11 +32,11 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        
         $user = Auth::user();
+        $tags = Tag::all();
         $todos = Todo::where('task_name', \Auth::user()->id)->get();
 
-        return view('index', compact('todos','user'));
+        return view('index', compact('todos','user','tags'));
     }
 
     /**
@@ -43,13 +44,22 @@ class TodoController extends Controller
      */
     public function add(TodoRequest $request)
     {
-        $user_id= Auth::id();
+        // $form = [
+        //     'task_name' => $request->input('task_name'),
+        //     'tag_id' => $request->input('tag_id'),
+        //     'user_id' => $user_id= Auth::id()
+        // ];
+        // unset($form['_token']);
 
-        Todo::create([
-            'task_name' => $request->task_name,
-            'tag_id' => $request->tag_id,
-            'user_id' => $user_id
-        ]);
+        $todo = new Todo;
+        $form = $request->all();
+        $form['user_id'] =  Auth::id();
+        unset($form['_token']);
+        $todo->fill($form)->save;
+
+        dd($form);
+        //Todo::create([$form]);
+        return redirect('/home');
     }
 
     /**

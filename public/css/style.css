@@ -26,7 +26,7 @@ body {
   justify-content: space-between;
 }
 
-.top_cont_right {
+.top_con_right {
   display: flex;
 }
 
@@ -94,7 +94,7 @@ body {
   padding: 7px;
 }
 
-.tag_id {
+.tag_con {
   border: 1px solid #ccc;
   font-size: 14px;
   padding: 7px 5px;

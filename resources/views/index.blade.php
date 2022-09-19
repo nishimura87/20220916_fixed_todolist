@@ -13,7 +13,7 @@
         <div class="top_con">
           <h1 class="title">Todo List</h1>
           @if (Auth::check())
-          <div class="top_cont_right">
+          <div class="top_con_right">
             <p class='login_con'>「{{ $user->name }}」でログイン中</p>
           @endif
           <form action="{{ route('logout') }}" method="POST">
@@ -33,9 +33,9 @@
         <form action="/add" method="POST"class="input_task">
           @csrf
           <input type="text" class="input_add" name="task_name">
-          <select class="tag_id" name="tag_id">
-          @foreach(config('pref') as $tag => $tag_id)
-            <option value="{{ $tag_id }}">{{ $tag_id }}</option>
+          <select class="tag_con" id="tag_id" name="tag_id">
+          @foreach($tags as $tag)
+            <option value="{{ $tag->id }}">{{ $tag->tag_name }}</option>
           @endforeach
           </select>
           <input class="btn-add" type="submit" value="追加">
