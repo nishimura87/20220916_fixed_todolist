@@ -14,12 +14,8 @@ class Todo extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tag() {
+    public function tags() {
         return $this->belongsTo(Tag::class);
-    }
-
-    public function getTagname(){
-        return 'tag_id'.$this->tag_name . optional($this->tag)->name;
     }
 
     /**
@@ -57,5 +53,15 @@ class Todo extends Model
     public function deleteTodoById($id)
     {
         return $this->destroy($id);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // 保存時user_idをログインユーザーに設定
+        self::saving(function($add) {
+            $add->user_id = \Auth::id();
+        });
     }
 }

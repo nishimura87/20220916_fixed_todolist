@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     use HasFactory;
+    protected $guarded = array('id');
 
-    public function tag_todos() {
-        return $this->hasMany('App\Models\Todo');
+    public function todos(){
+        return $this->hasMany(Todo::class);
     }
+
+    // public function getTagname(){
+    //     return $this->tag_name;
+    // }
 }

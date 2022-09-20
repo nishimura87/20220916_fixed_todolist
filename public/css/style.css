@@ -143,6 +143,14 @@ table th,td {
   padding: 5px;
 }
 
+.tag_name {
+  border: 1px solid #ccc;
+  font-size: 14px;
+  padding: 7px 5px;
+  border-radius: 5px;
+  outline: none;
+}
+
 .btn-update {
   background-color: #fff;
   border: 2px solid rgb(226, 61, 16);

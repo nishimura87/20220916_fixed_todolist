@@ -33,10 +33,13 @@ class TodoController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $tags = Tag::all();
-        $todos = Todo::where('task_name', \Auth::user()->id)->get();
+        $tags = Tag::All();
+        $todos = Todo::where('user_id', \Auth::user()->id)->get();
 
-        return view('index', compact('todos','user','tags'));
+        $tag_name = Todo::with('tags')->get();
+        //dd($tag_name);
+
+        return view('index', compact('todos','user','tags','tag_name'));
     }
 
     /**
@@ -44,21 +47,13 @@ class TodoController extends Controller
      */
     public function add(TodoRequest $request)
     {
-        // $form = [
-        //     'task_name' => $request->input('task_name'),
-        //     'tag_id' => $request->input('tag_id'),
-        //     'user_id' => $user_id= Auth::id()
-        // ];
-        // unset($form['_token']);
-
         $todo = new Todo;
         $form = $request->all();
         $form['user_id'] =  Auth::id();
         unset($form['_token']);
-        $todo->fill($form)->save;
 
-        dd($form);
-        //Todo::create([$form]);
+        //dd($form);
+        Todo::create($form);
         return redirect('/home');
     }
 

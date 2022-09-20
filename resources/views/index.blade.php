@@ -44,6 +44,7 @@
           <tr>
             <th>作成日</th>
             <th>タスク名</th>
+            <th>タグ</th>
             <th>更新</th>
             <th>削除</th>
           </tr>
@@ -55,7 +56,10 @@
             <td>
             <input type ="hidden" name="id" value="{{ $todo->id }}">
             <input type="text" name="task_name"  id="task_name" value="{{ $todo->task_name }}" class=task_con></td>
-            <select class="tag_name" name="tag_name" id="tag_name" value="{{ $tag->tag->getTagname() }}" >
+            <td><select class="tag_name" name="tag_name" id="tag_name">
+              @foreach($tags as $tag)
+            <option value="{{ $tag->id }}">{{ $tag->tag_name }}</option>
+              @endforeach/td>
             <td><button type="submit" class="btn-update">更新</button></td>
             </form>
             <td>
