@@ -8,9 +8,77 @@
   <title>Todo List</title>
   </head>
   <body>
-
-  
+    <div class="content">
+      <div class="todo_list">
+        <div class="top_con">
+          <h1 class="title">タスク検索</h1>
+          @if (Auth::check())
+          <div class="top_con_right">
+            <p class='login_con'>「{{ $user->name }}」でログイン中</p>
+          @endif
+          <form action="{{ route('logout') }}" method="POST">
+            @csrf
+          <button type="submit" class="btn-logout">ログアウト</button>
+          </form>
+          </div>  
+        </div>
+        @if (count($errors) > 0)
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{$error}}</li>
+            @endforeach
+          </ul>
+          @endif
+        <form action="/search" method="POST"class="input_task">
+          @csrf
+          <input type="text" class="input_add" name="task_name">
+          <select class="tag_con" id="tag_id" name="tag_id">
+          @foreach($tags as $tag)
+            <option value="{{ $tag->id }}">{{ $tag->tag_name}}</option>
+          @endforeach
+          </select>
+          <input class="btn-search" type="submit" value="検索">
+        </form>
+        <table calss = "table table-todo">
+          <tr>
+            <th>作成日</th>
+            <th>タスク名</th>
+            <th>タグ</th>
+            <th>更新</th>
+            <th>削除</th>
+          </tr>
+          @if (isset($search))
+          @foreach ($todos as $todo)
+          <tr>
+            <td>{{ $todo->created_at }}</td>
+            <form action="{{ route('todo.update', ['id'=>$todo->id]) }}" method="POST">
+            @csrf
+            <td>
+            <input type ="hidden" name="id" >
+            <input type="text" name="task_name"  id="task_name" class=task_con></td>
+            <td><select class="tag_con" id="tag_id" name="tag_id">
+              @foreach($tags as $tag)
+            <option value="{{ $tag->id }}"
+              @if($tag->id == $todo->tag_id) selected @endif>
+              </option>
+              @endforeach/td>
+            <td><button type="submit" class="btn-update">更新</button></td>
+            </form>
+            <td>
+              <form action="{{ route('todo.delete', ['id'=>$todo->id]) }}" method="POST">
+              @csrf
+              <button type="submit" class="btn-delete">削除</button>
+              </form>
+            </td>
+          </tr>
+          @endforeach
+          @endif
+        </table>
+        <form action="/return" method="POST" class="return">
+            @csrf
+          <button type="submit" class="btn-return">戻る</button>
+        </form>
+      </div>
+    </div>
   </body>
-  
-
 </html>

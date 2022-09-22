@@ -22,7 +22,7 @@
           </form>
           </div>  
         </div>
-        <a class="btn-find" href="{{ route('find') }}">タスク検索</a>
+        <a class="btn-find" href="{{ route('todo.find') }}">タスク検索</a>
         @if (count($errors) > 0)
           <ul>
             @foreach ($errors->all() as $error)
@@ -38,7 +38,7 @@
             <option value="{{ $tag->id }}">{{ $tag->tag_name }}</option>
           @endforeach
           </select>
-          <input class="btn-add" type="submit" value="追加">
+          <input class="btn-add search" type="submit" value="追加">
         </form>
         <table calss = "table table-todo">
           <tr>
@@ -48,17 +48,20 @@
             <th>更新</th>
             <th>削除</th>
           </tr>
+
           @foreach ($todos as $todo)
           <tr>
             <td>{{ $todo->created_at }}</td>
             <form action="{{ route('todo.update', ['id'=>$todo->id]) }}" method="POST">
             @csrf
             <td>
-            <input type ="hidden" name="id" value="{{ $todo->id }}">
+            <input type ="hidden" name="id">
             <input type="text" name="task_name"  id="task_name" value="{{ $todo->task_name }}" class=task_con></td>
-            <td><select class="tag_name" name="tag_name" id="tag_name">
+            <td><select class="tag_con" id="tag_id" name="tag_id">
               @foreach($tags as $tag)
-            <option value="{{ $tag->id }}">{{ $tag->tag_name }}</option>
+            <option value="{{ $tag->id }}"
+              @if($tag->id == $todo->tag_id) selected @endif>
+              {{ $tag->tag_name }}</option>
               @endforeach/td>
             <td><button type="submit" class="btn-update">更新</button></td>
             </form>
