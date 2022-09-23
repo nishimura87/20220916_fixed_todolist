@@ -65,7 +65,7 @@ class TodoController extends Controller
             'tag_id' => $request->tag_id
         ])->save();
 
-        return redirect('/home');
+        return back();
     }
 
     /**
@@ -75,7 +75,7 @@ class TodoController extends Controller
     {
         $todo = Todo::destroy($id);
 
-        return redirect('/home');
+        return back();
     }
 
     /**
@@ -86,7 +86,7 @@ class TodoController extends Controller
     {
         $user = Auth::user();
         $tags = Tag::All();
-        $todos = Todo::where('user_id', \Auth::user()->id)->get();
+        $todos = [];
 
         return view('find', compact('todos','user','tags'));
     }
@@ -106,11 +106,11 @@ class TodoController extends Controller
         if (!empty($task_name)) {
             $form->where('task_name','like',"%$task_name%");
         }
-        if (!empty($tag_id))  {
+        if (!empty($tag_id)) {
             $form->where('tag_id','like',$tag_id);
         }
         else {
-            $form = Todo::All();
+            //$form = Todo::All();
         }
 
         $todos = $form->get();

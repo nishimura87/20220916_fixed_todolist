@@ -33,6 +33,7 @@
           @csrf
           <input type="text" class="input_add" name="task_name">
           <select class="tag_con" id="tag_id" name="tag_id">
+            <option value=""></option>
           @foreach($tags as $tag)
             <option value="{{ $tag->id }}">{{ $tag->tag_name}}</option>
           @endforeach
@@ -47,7 +48,7 @@
             <th>更新</th>
             <th>削除</th>
           </tr>
-          @if (isset($search))
+          @if (isset($todos))
           @foreach ($todos as $todo)
           <tr>
             <td>{{ $todo->created_at }}</td>
@@ -55,13 +56,16 @@
             @csrf
             <td>
             <input type ="hidden" name="id" >
-            <input type="text" name="task_name"  id="task_name" class=task_con></td>
+            <input type="text" name="task_name"  id="task_name" class=task_con 
+            value="{{$todo->task_name }}"></td>
             <td><select class="tag_con" id="tag_id" name="tag_id">
-              @foreach($tags as $tag)
-            <option value="{{ $tag->id }}"
-              @if($tag->id == $todo->tag_id) selected @endif>
+            @foreach($tags as $tag)
+              <option value="{{ $tag->id }}"
+                @if($tag->id == $todo->tag_id) selected @endif>
+                {{ $tag->tag_name }}
               </option>
-              @endforeach/td>
+            @endforeach
+            </td>
             <td><button type="submit" class="btn-update">更新</button></td>
             </form>
             <td>
