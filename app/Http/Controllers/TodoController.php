@@ -104,16 +104,17 @@ class TodoController extends Controller
         $tag_id = $request->tag_id;
 
         if (!empty($task_name)) {
-            $form->where('task_name','like',"%$task_name%");
+            $form = Todo::where('user_id', \Auth::user()->id)->where('task_name','like',"%$task_name%");
         }
         if (!empty($tag_id)) {
-            $form->where('tag_id','like',$tag_id);
+            $form = Todo::where('user_id', \Auth::user()->id)->where('tag_id','like',$tag_id);
         }
         else {
             //$form = Todo::All();
         }
 
         $todos = $form->get();
+        
 
         //dd($todos);
 
