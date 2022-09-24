@@ -9,7 +9,7 @@ Route::post('/update/{id}', [TodoController::class, 'update'])->name('todo.updat
 Route::post('/delete/{id}', [TodoController::class, 'delete'])->name('todo.delete');
 Route::post('/logout', [TodoController::class, 'logout']);
 Route::get('/find', [TodoController::class, 'find'])->name('todo.find');
-Route::post('/search', [TodoController::class, 'search']);
+Route::get('/search', [TodoController::class, 'search']);
 Route::post('/return', [TodoController::class, 'return']);
 
 Route::get('/', function () {

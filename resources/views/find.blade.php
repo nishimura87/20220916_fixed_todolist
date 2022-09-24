@@ -29,7 +29,7 @@
             @endforeach
           </ul>
           @endif
-        <form action="/search" method="POST"class="input_task">
+        <form action="/search" method="GET"class="input_task">
           @csrf
           <input type="text" class="input_add" name="task_name">
           <select class="tag_con" id="tag_id" name="tag_id">

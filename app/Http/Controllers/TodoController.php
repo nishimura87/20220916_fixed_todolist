@@ -57,7 +57,7 @@ class TodoController extends Controller
     /**
      * 更新処理
      */
-    public function update(Request $request, $id)
+    public function update(TodoRequest $request, $id)
     {
         $todo = Todo::find($id);
         $form = $todo->fill([
